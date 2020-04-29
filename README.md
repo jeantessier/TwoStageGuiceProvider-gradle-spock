@@ -516,4 +516,4 @@ Date | Edit
 ---- | ----
 2009-01-28 | First draft.
 2009-01-29 | Last substantial edit.
-2020-04-28 | Making sure it all still works with the latest version of Guice, convent tests to Spock
+2020-04-28 | Making sure it all still works with the latest version of Guice, convert tests to Spock
