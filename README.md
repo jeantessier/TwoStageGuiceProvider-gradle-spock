@@ -51,37 +51,36 @@ might configure a different set of URLs.
 For the purposes of this discussion, here is a quick specification of what we
 are looking for:
 
-```java
-package service;
+```groovy
+package service
 
-import org.junit.*;
-import static org.junit.Assert.*;
-import static org.hamcrest.CoreMatchers.*;
+import spock.lang.Specification
 
-public class TestServiceImpl {
-    private Service sut;
+class ServiceImplTest extends Specification {
 
-    @Before
-    public void setUp() {
-        sut = new ServiceImpl();
+    def sut = new ServiceImpl()
+
+    def "has default state"() {
+        expect:
+        sut.state == "generic"
     }
 
-    @Test
-    public void testDefault_StateEqualsGeneric() {
-        assertThat(sut.getState(), is(equalTo("generic")));
+    def "setupClient1 sets the state to client1"() {
+        when:
+        sut.setupClient1()
+
+        then:
+        sut.state == "client1"
     }
 
-    @Test
-    public void testSetupClient1_StateEqualsClient1() {
-        sut.setupClient1();
-        assertThat(sut.getState(), is(equalTo("client1")));
+    def "setupClient2 sets the state to client2"() {
+        when:
+        sut.setupClient2()
+
+        then:
+        sut.state == "client2"
     }
 
-    @Test
-    public void testSetupClient2_StateEqualsClient2() {
-        sut.setupClient2();
-        assertThat(sut.getState(), is(equalTo("client2")));
-    }
 }
 ```
 
@@ -112,33 +111,29 @@ public class ServiceImpl implements Service {
 To begin with, we need a base `Module` that creates a generic `Service`
 implementation.  Here is a test for it:
 
-```java
-package generic;
+```groovy
+package generic
 
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
-import org.junit.*;
-import service.*;
+import spock.lang.Specification
 
-public class TestGenericModule {
-    private GenericModule sut;
+class GenericModuleTest extends Specification {
 
-    @Before
-    public void setUp() {
-        sut = new GenericModule();
+    def sut = new GenericModule()
+
+    def "configure does nothing"() {
+        expect:
+        sut.configure()
     }
 
-    @Test
-    public void testConfigure() {
-        sut.configure();
+    def "provides a generic service"() {
+        when:
+        def actualService = sut.provideService()
+
+        then:
+        actualService != null
+        actualService.state == "generic"
     }
 
-    @Test
-    public void testProvideService() {
-        Service actualService = sut.provideService();
-        assertThat(actualService, is(notNullValue()));
-        assertThat(actualService.getState(), is(equalTo("generic")));
-    }
 }
 ```
 
@@ -178,44 +173,35 @@ their own module instead of the previous `GenericModule`.
 A hypothetical client No. 1 could need a module that follows the following
 specification, that it calls `setupClient1()` on an existing `Service` instance:
 
-```java
-package client1;
+```groovy
+package client1
 
-import static org.hamcrest.Matchers.*;
-import org.jmock.*;
-import org.jmock.integration.junit4.*;
-import static org.junit.Assert.*;
-import org.junit.*;
-import org.junit.runner.*;
-import service.*;
+import service.Service
+import spock.lang.Specification
 
-@RunWith(JMock.class)
-public class TestClient1Module {
-    private Mockery context = new Mockery();
+class Client1ModuleTest extends Specification {
 
-    private Client1Module sut;
+    def sut = new Client1Module()
 
-    @Before
-    public void setUp() {
-        sut = new Client1Module();
+    def "configure does nothing"() {
+        expect:
+        sut.configure()
     }
 
-    @Test
-    public void testConfigure() {
-        sut.configure();
+    def "configures a generic service for client1"() {
+        given:
+        def mockService = Mock(Service)
+
+        when:
+        def actualService = sut.provideService(mockService)
+
+        then:
+        actualService == mockService
+
+        and:
+        1 * mockService.setupClient1()
     }
 
-    @Test
-    public void testProvideService() {
-        final Service mockService = context.mock(Service.class);
-
-        context.checking(new Expectations() {{
-            one (mockService).setupClient1();
-        }});
-
-        Service actualService = sut.provideService(mockService);
-        assertThat(actualService, is(sameInstance(mockService)));
-    }
 }
 ```
 
@@ -243,44 +229,35 @@ public class Client1Module extends AbstractModule {
 
 A hypothetical client No. 2 could require this specification instead:
 
-```java
-package client2;
+```groovy
+package client2
 
-import static org.hamcrest.Matchers.*;
-import org.jmock.*;
-import org.jmock.integration.junit4.*;
-import static org.junit.Assert.*;
-import org.junit.*;
-import org.junit.runner.*;
-import service.*;
+import service.Service
+import spock.lang.Specification
 
-@RunWith(JMock.class)
-public class TestClient2Module {
-    private Mockery context = new Mockery();
+class Client2ModuleTest extends Specification {
 
-    private Client2Module sut;
+    def sut = new Client2Module()
 
-    @Before
-    public void setUp() {
-        sut = new Client2Module();
+    def "configure does nothing"() {
+        expect:
+        sut.configure()
     }
 
-    @Test
-    public void testConfigure() {
-        sut.configure();
+    def "configures a generic service for client2"() {
+        given:
+        def mockService = Mock(Service)
+
+        when:
+        def actualService = sut.provideService(mockService)
+
+        then:
+        actualService == mockService
+
+        and:
+        1 * mockService.setupClient2()
     }
 
-    @Test
-    public void testProvideService() {
-        final Service mockService = context.mock(Service.class);
-
-        context.checking(new Expectations() {{
-            one (mockService).setupClient2();
-        }});
-
-        Service actualService = sut.provideService(mockService);
-        assertThat(actualService, is(sameInstance(mockService)));
-    }
 }
 ```
 
@@ -539,4 +516,4 @@ Date | Edit
 ---- | ----
 2009-01-28 | First draft.
 2009-01-29 | Last substantial edit.
-2020-04-27 | Making sure it all still works with the latest version of Guice.
+2020-04-28 | Making sure it all still works with the latest version of Guice, convent tests to Spock
