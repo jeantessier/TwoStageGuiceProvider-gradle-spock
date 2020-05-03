@@ -7,11 +7,6 @@ class Client1ModuleTest extends Specification {
 
     def sut = new Client1Module()
 
-    def "configure does nothing"() {
-        expect:
-        sut.configure()
-    }
-
     def "configures a generic service for client1"() {
         given:
         def mockService = Mock(Service)

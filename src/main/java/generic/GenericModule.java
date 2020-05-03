@@ -7,10 +7,6 @@ import service.Service;
 import service.ServiceImpl;
 
 public class GenericModule extends AbstractModule {
-    protected void configure() {
-        // Do nothing.
-    }
-
     @Provides
     @Named("generic")
     public Service provideService() {

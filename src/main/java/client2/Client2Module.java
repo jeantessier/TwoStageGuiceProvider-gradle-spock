@@ -6,10 +6,6 @@ import com.google.inject.name.Named;
 import service.Service;
 
 public class Client2Module extends AbstractModule {
-    protected void configure() {
-        // Do nothing.
-    }
-
     @Provides
     @Named("client2")
     public Service provideService(@Named("generic") Service service) {

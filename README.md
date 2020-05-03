@@ -120,11 +120,6 @@ class GenericModuleTest extends Specification {
 
     def sut = new GenericModule()
 
-    def "configure does nothing"() {
-        expect:
-        sut.configure()
-    }
-
     def "provides a generic service"() {
         when:
         def actualService = sut.provideService()
@@ -147,10 +142,6 @@ import com.google.inject.*;
 import service.*;
 
 public class GenericModule extends AbstractModule {
-    protected void configure() {
-        // Do nothing.
-    }
-
     @Provides
     public Service provideService() {
         return new ServiceImpl();
@@ -183,11 +174,6 @@ class Client1ModuleTest extends Specification {
 
     def sut = new Client1Module()
 
-    def "configure does nothing"() {
-        expect:
-        sut.configure()
-    }
-
     def "configures a generic service for client1"() {
         given:
         def mockService = Mock(Service)
@@ -214,10 +200,6 @@ import com.google.inject.*;
 import service.*;
 
 public class Client1Module extends AbstractModule {
-    protected void configure() {
-        // Do nothing.
-    }
-
     @Provides
     public Service provideService() {
         Service service = new ServiceImpl();
@@ -238,11 +220,6 @@ import spock.lang.Specification
 class Client2ModuleTest extends Specification {
 
     def sut = new Client2Module()
-
-    def "configure does nothing"() {
-        expect:
-        sut.configure()
-    }
 
     def "configures a generic service for client2"() {
         given:
@@ -270,10 +247,6 @@ import com.google.inject.*;
 import service.*;
 
 public class Client2Module extends AbstractModule {
-    protected void configure() {
-        // Do nothing.
-    }
-
     @Provides
     public Service provideService() {
         Service service = new ServiceImpl();
@@ -306,10 +279,6 @@ I could rewrite `Client1Module` as:
     import service.*;
 
     public class Client1Module extends AbstractModule {
-        protected void configure() {
-            // Do nothing.
-        }
-
         @Provides
         public Service provideService(Service service) {
             service.setupClient1();
@@ -348,10 +317,6 @@ import com.google.inject.name.*;
 import service.*;
 
 public class GenericModule extends AbstractModule {
-    protected void configure() {
-        // Do nothing.
-    }
-
     @Provides
     @Named("generic")
     public Service provideService() {
@@ -371,10 +336,6 @@ import com.google.inject.name.*;
 import service.*;
 
 public class Client1Module extends AbstractModule {
-    protected void configure() {
-        // Do nothing.
-    }
-
     @Provides
     @Named("client1")
     public Service provideService(@Named("generic") Service service) {
@@ -404,10 +365,6 @@ import com.google.inject.name.*;
 import service.*;
 
 public class Client2Module extends AbstractModule {
-    protected void configure() {
-        // Do nothing.
-    }
-
     @Provides
     @Named("client2")
     public Service provideService(@Named("generic") Service service) {
@@ -517,3 +474,4 @@ Date | Edit
 2009-01-28 | First draft.
 2009-01-29 | Last substantial edit.
 2020-04-28 | Making sure it all still works with the latest version of Guice, convert tests to Spock
+2020-05-03 | Remove empty `configure()` methods that are no longer needed in Guice `4.2.3`.
