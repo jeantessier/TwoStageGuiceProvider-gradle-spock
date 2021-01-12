@@ -8,3 +8,4 @@
  */
 
 rootProject.name = 'TwoStageGuiceProvider-gradle-spock'
+include('lib')
