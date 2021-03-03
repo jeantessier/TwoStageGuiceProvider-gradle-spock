@@ -8,7 +8,7 @@ in turn.
 
 The finalized code makes up the rest of this repo.
 
-All examples use Guice 4.0.  They were tested with Spock 2.0 using Java 13.
+All examples use Guice 5.0.  They were tested with Spock 2.0 using Java 13.
 
 ## Introduction
 
