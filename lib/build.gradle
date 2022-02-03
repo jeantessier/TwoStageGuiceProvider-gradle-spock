@@ -19,9 +19,6 @@ repositories {
     mavenCentral()
 }
 
-String groovyVersion = "4.0.0"
-String spockVersion = "2.0-groovy-3.0"
-
 dependencies {
     // Use the latest Groovy version for Spock testing
     testImplementation "org.apache.groovy:groovy:${groovyVersion}"
