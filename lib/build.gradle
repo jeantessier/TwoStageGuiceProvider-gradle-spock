@@ -19,21 +19,31 @@ repositories {
     mavenCentral()
 }
 
+String groovyVersion = "4.0.0"
+String spockVersion = "2.0-groovy-3.0"
+
 dependencies {
     // Use the latest Groovy version for Spock testing
-    testImplementation 'org.codehaus.groovy:groovy:3.0.8'
+    testImplementation "org.apache.groovy:groovy:${groovyVersion}"
 
     // Use the awesome Spock testing and specification framework even with Java
-    testImplementation 'org.spockframework:spock-core:2.0-groovy-3.0'
+    testImplementation("org.spockframework:spock-core:${spockVersion}") {
+        exclude group: 'org.codehaus.groovy'    //to do not have conflicting Groovy versions - Groovy 4 changed groupId from "org.codehaus.groovy" to "org.apache.groovy"
+    }
     testImplementation 'junit:junit:4.13.2'
 
     // This dependency is exported to consumers, that is to say found on their compile classpath.
     api 'org.apache.commons:commons-math3:3.6.1'
 
     // This dependency is used internally, and not exposed to consumers on their own compile classpath.
-    implementation 'com.google.guava:guava:30.1.1-jre'
+    implementation 'com.google.guava:guava:31.0.1-jre'
 
-    implementation 'com.google.inject:guice:5.0.1'
+    implementation 'com.google.inject:guice:5.1.0'
+}
+
+tasks.withType(GroovyCompile).configureEach {
+//    options.compilerArgs.add('-Dspock.iKnowWhatImDoing.disableGroovyVersionCheck=true')   //doesn't work
+    options.forkOptions.jvmArgs << '-Dspock.iKnowWhatImDoing.disableGroovyVersionCheck=true'    //ok
 }
 
 test {
