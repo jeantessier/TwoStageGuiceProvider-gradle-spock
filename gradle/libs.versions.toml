@@ -3,7 +3,7 @@
 
 [versions]
 groovy = "4.0.15"
-spock-core = "2.4-M1-groovy-4.0"
+spock-core = "2.4-M2-groovy-4.0"
 guice = "7.0.0"
 
 [libraries]
