@@ -2,7 +2,7 @@
 # https://docs.gradle.org/current/userguide/platforms.html#sub::toml-dependencies-format
 
 [versions]
-groovy = "4.0.21"
+groovy = "4.0.22"
 spock-core = "2.4-M4-groovy-4.0"
 guice = "7.0.0"
 
