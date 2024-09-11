@@ -10,6 +10,11 @@ The finalized code makes up the rest of this repo.
 
 All examples use Guice 7.0.  They were tested with Spock 2.4 using Java 21.
 
+Alternative versions:
+[JUnit 4](https://github.com/jeantessier/TwoStageGuiceProvider-gradle-junit4/blob/main/README.md),
+[JUnit 5](https://github.com/jeantessier/TwoStageGuiceProvider-gradle-junit5/blob/main/README.md),
+Spock
+
 ## Introduction
 
 I got the idea for this pattern as I was trying to reuse a framework.  This
