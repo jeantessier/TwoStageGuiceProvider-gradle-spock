@@ -8,7 +8,7 @@ in turn.
 
 The finalized code makes up the rest of this repo.
 
-All examples use Guice 7.0.  They were tested with Spock 2.4 using Java 21.
+All examples use Guice 7.0.  They were tested with Spock 2.4 using Java 25.
 
 Alternative versions:
 [JUnit 4](https://github.com/jeantessier/TwoStageGuiceProvider-gradle-junit4/blob/main/README.md),
